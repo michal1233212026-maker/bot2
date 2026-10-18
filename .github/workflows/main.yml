@@ -1,0 +1,26 @@
+name: Build mod
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.12"
+      - name: Build
+        run: gradle build --no-daemon
+      - name: Upload mod jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: anarchia-bot-manager
+          path: build/libs/anarchia-bot-manager-1.0.0.jar
+          if-no-files-found: error
